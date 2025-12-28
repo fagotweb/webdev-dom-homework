@@ -1,71 +1,109 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Проект "Комменты"</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
 
-  <body>
-    <div class="container">
-      <ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="add-form">
-        <input
-          type="text"
-          class="add-form-name"
-          placeholder="Введите ваше имя"
-        />
-        <textarea
-          type="textarea"
-          class="add-form-text"
-          placeholder="Введите ваш коментарий"
-          rows="4"
-        ></textarea>
-        <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+<head>
+  <title>Проект "Комменты"</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="container">
+    <ul class="comments">
+      <li class="comment">
+        <div class="comment-header">
+          <div class="name">Глеб Фокин</div>
+          <div class="date">12.02.22 12:18</div>
         </div>
+        <div class="comment-body">
+          <div class="comment-text">
+            Это будет первый комментарий на этой странице
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">3</span>
+            <button class="like-button"></button>
+          </div>
+        </div>
+      </li>
+      <li class="comment">
+        <div class="comment-header">
+          <div>Варвара Н.</div>
+          <div>13.02.22 19:22</div>
+        </div>
+        <div class="comment-body">
+          <div class="comment-text">
+            Мне нравится как оформлена эта страница! ❤
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">75</span>
+            <button class="like-button -active-like"></button>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="add-form">
+      <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
+      <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
+      <div class="add-form-row">
+        <button class="add-form-button">Написать</button>
       </div>
     </div>
-  </body>
+  </div>
+</body>
 
-  <script>
-    "use strict";
-    // Код писать здесь
-    console.log("It works!");
-  </script>
+<script>
+  "use strict";
+  // Код писать здесь
+  const commentsEl = document.querySelector('.comments');
+  const commentEl = document.querySelector('.comment');
+  const commentTextEl = document.querySelector('.comment-text');
+  const nameEl = document.querySelector('.name');
+  const dateEl = document.querySelector('.date');
+  const likesCounterEl = document.querySelector('.likes-counter');
+  const addFormNameEl = document.querySelector('.add-form-name');
+  const addFormTextEl = document.querySelector('.add-form-text');
+  const buttonEl = document.querySelector('.add-form-button');
+
+
+  addFormNameEl.addEventListener('click', () => {
+    addFormNameEl.style.backgroundColor = 'white';
+  })
+
+  addFormTextEl.addEventListener('click', () => {
+    addFormTextEl.style.backgroundColor = 'white';
+  })
+
+  buttonEl.addEventListener('click', () => {
+    const oldHtml = commentsEl.innerHTML;
+    nameEl.textContent = addFormNameEl.value;
+    if (addFormNameEl.value === "") {
+      addFormNameEl.style.backgroundColor = 'red';
+      return;
+    }
+    addFormNameEl.value = "";
+
+    commentTextEl.textContent = addFormTextEl.value;
+    if (addFormTextEl.value === "") {
+      addFormTextEl.style.backgroundColor = 'red';
+      return;
+    }
+    addFormTextEl.value = "";
+
+    let now = new Date();
+    let dateStr = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.toLocaleString('default', { year: '2-digit' })}   ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    dateEl.textContent = dateStr;
+
+    likesCounterEl.textContent = "0";
+
+    const Html = commentEl.innerHTML;
+    commentsEl.innerHTML = oldHtml + '<li class="comment">' + Html + '</li>';
+  })
+
+  console.log("It works!");
+</script>
+
 </html>
