@@ -48,7 +48,6 @@
 
     for (const likeButtonEl of likeButtonElements) {
       likeButtonEl.addEventListener("click", () => {
-        // likeButtonEl.className += ' -active-like';
         const index = likeButtonEl.dataset.index;
         if (comments[index].class === "like-button" ) {
           comments[index].class = "like-button -active-like";
