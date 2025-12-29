@@ -9,42 +9,7 @@
 
 <body>
   <div class="container">
-    <ul class="comments">
-      <li class="comment">
-        <div class="comment-header">
-          <div class="name">Глеб Фокин</div>
-          <div class="date">12.02.22 12:18</div>
-        </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            Это будет первый комментарий на этой странице
-          </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">3</span>
-            <button class="like-button"></button>
-          </div>
-        </div>
-      </li>
-      <li class="comment">
-        <div class="comment-header">
-          <div>Варвара Н.</div>
-          <div>13.02.22 19:22</div>
-        </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            Мне нравится как оформлена эта страница! ❤
-          </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">75</span>
-            <button class="like-button -active-like"></button>
-          </div>
-        </div>
-      </li>
-    </ul>
+    <ul class="comments"></ul>
     <div class="add-form">
       <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
       <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
@@ -58,17 +23,13 @@
 <script>
   "use strict";
   // Код писать здесь
-  const commentsEl = document.querySelector('.comments');
-  const commentEl = document.querySelector('.comment');
-  const commentTextEl = document.querySelector('.comment-text');
-  const nameEl = document.querySelector('.name');
-  const dateEl = document.querySelector('.date');
+  const commentsEl = document.querySelector('.comments'); 
   const likesCounterEl = document.querySelector('.likes-counter');
   const addFormNameEl = document.querySelector('.add-form-name');
   const addFormTextEl = document.querySelector('.add-form-text');
   const buttonEl = document.querySelector('.add-form-button');
-
-
+  const likeButtonEl = document.querySelector('.like-button');
+  
   addFormNameEl.addEventListener('click', () => {
     addFormNameEl.style.backgroundColor = 'white';
   })
@@ -77,30 +38,62 @@
     addFormTextEl.style.backgroundColor = 'white';
   })
 
-  buttonEl.addEventListener('click', () => {
-    const oldHtml = commentsEl.innerHTML;
-    nameEl.textContent = addFormNameEl.value;
+  const comments = [
+    { name: "Глеб Фокин", comment: "Это будет первый комментарий на этой странице", data: "12.02.22 12:18", like: 3, class: "like-button" },    
+    { name: "Варвара Н.", comment: "Мне нравится как оформлена эта страница! ❤", data: "12.02.22 12:18", like: 75, class: "like-button" }
+  ]
+
+  const likesListeners = () => {
+    const likeButtonElements = document.querySelectorAll('.like-button');
+
+    for (const likeButtonEl of likeButtonElements) {
+      likeButtonEl.addEventListener("click", () => {
+        const index = likeButtonEl.dataset.index;
+        if (comments[index].class === "like-button" ) {
+          comments[index].class = "like-button -active-like";
+          comments[index].like = comments[index].like+1;
+        } else {
+          comments[index].class = "like-button";
+          comments[index].like = comments[index].like-1;
+        }        
+        renderComments();
+      });
+    }
+  };
+
+  const renderComments = () => {
+    const commentsHtml = comments.map((comments, index) => {
+      const Html = commentsEl.innerHTML;
+      return `<li class="comment"><div class="comment-header"><div class="name">"${comments.name}"</div><div class="date">"${comments.data}"</div></div><div class="comment-body"><div class="comment-text">"${comments.comment}"</div></div><div class="comment-footer"><div class="likes"><span data-index="${index}" class="likes-counter">"${comments.like}"</span><button data-index="${index}" class="${comments.class}"></button></div></div></li>`
+    }).join("");
+    commentsEl.innerHTML = commentsHtml;
+    likesListeners();
+  }
+
+  renderComments();
+
+  buttonEl.addEventListener("click", () => {
+    comments.name = addFormNameEl.value;
     if (addFormNameEl.value === "") {
       addFormNameEl.style.backgroundColor = 'red';
       return;
-    }
-    addFormNameEl.value = "";
+    };
 
-    commentTextEl.textContent = addFormTextEl.value;
+    comments.comment = addFormTextEl.value;
     if (addFormTextEl.value === "") {
       addFormTextEl.style.backgroundColor = 'red';
       return;
-    }
-    addFormTextEl.value = "";
+    };
 
     let now = new Date();
     let dateStr = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.toLocaleString('default', { year: '2-digit' })}   ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    dateEl.textContent = dateStr;
+    comments.data = dateStr;
 
-    likesCounterEl.textContent = "0";
-
-    const Html = commentEl.innerHTML;
-    commentsEl.innerHTML = oldHtml + '<li class="comment">' + Html + '</li>';
+    const newComments = { name: addFormNameEl.value, comment: addFormTextEl.value, data: dateStr, like: 0, class: "like-button" }
+    comments.push(newComments);
+    addFormNameEl.value = "";
+    addFormTextEl.value = "";
+    renderComments();
   })
 
   console.log("It works!");
