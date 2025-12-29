@@ -68,7 +68,7 @@
   const addFormTextEl = document.querySelector('.add-form-text');
   const buttonEl = document.querySelector('.add-form-button');
   const likeButtonEl = document.querySelector('.like-button');
-  
+
   addFormNameEl.addEventListener('click', () => {
     addFormNameEl.style.backgroundColor = 'white';
   })
@@ -78,24 +78,37 @@
   })
 
   const comments = [
-    { name: "Глеб Фокин", comment: "Это будет первый комментарий на этой странице", data: "12.02.22 12:18", like: "3", class: "like-button" },    
+    { name: "Глеб Фокин", comment: "Это будет первый комментарий на этой странице", data: "12.02.22 12:18", like: "3", class: "like-button" },
     { name: "Варвара Н.", comment: "Мне нравится как оформлена эта страница! ❤", data: "12.02.22 12:18", like: "75", class: "like-button" }
   ]
+
+  const CommentListeners = () => {
+    const likeElements = document.querySelectorAll("li");
+
+    for (const commentEl of likeElements) {
+      commentEl.addEventListener("click", () => {
+        const index = commentEl.dataset.index;
+        console.log(`${index}`);
+        //addFormNameEl.value = comments[index].name;
+        addFormTextEl.value = comments[index].name + " > " + comments[index].comment;
+      });
+    }
+  };
 
   const likesListeners = () => {
     const likeButtonElements = document.querySelectorAll('.like-button');
 
     for (const likeButtonEl of likeButtonElements) {
-      likeButtonEl.addEventListener("click", () => {
-        // likeButtonEl.className += ' -active-like';
+      likeButtonEl.addEventListener("click", (event) => {
+        event.stopPropagation();
         const index = likeButtonEl.dataset.index;
-        if (comments[index].class === "like-button" ) {
+        if (comments[index].class === "like-button") {
           comments[index].class = "like-button -active-like";
-          comments[index].like = Number(comments[index].like)+1;
+          comments[index].like = Number(comments[index].like) + 1;
         } else {
           comments[index].class = "like-button";
-          comments[index].like = Number(comments[index].like)-1;
-        }        
+          comments[index].like = Number(comments[index].like) - 1;
+        }
         renderComments();
       });
     }
@@ -111,10 +124,11 @@
       likeButtonEl.dataset.index = `${index}`;
       likeButtonEl.className = comments.class;
       const Html = commentEl.innerHTML;
-      return '<li class="comment">' + Html + '</li>'
+      return `<li data-index="${index}" class="comment">` + Html + `</li>`
     }).join("");
     commentsEl.innerHTML = commentsHtml;
     likesListeners();
+    CommentListeners();
   }
 
   renderComments();
@@ -136,7 +150,7 @@
     let dateStr = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.toLocaleString('default', { year: '2-digit' })}   ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     dateEl.textContent = dateStr;
 
-    const newComments = { name: addFormNameEl.value, comment: addFormTextEl.value, data: dateStr, like: 0, class: "like-button" }
+    const newComments = { name: addFormNameEl.value.replaceAll("<", "&lt").replaceAll(">", "&gt"), comment: addFormTextEl.value.replaceAll("<", "&lt").replaceAll(">", "&gt"), data: dateStr, like: 0, class: "like-button" }
     comments.push(newComments);
     addFormNameEl.value = "";
     addFormTextEl.value = "";
