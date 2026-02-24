@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const host = 'https://wedev-api.sky.pro/api/v1/alex-zakoldaev'
 
 export const fetchComments = () => {
@@ -13,6 +14,7 @@ export const fetchComments = () => {
                     text: comment.text,
                     likes: comment.likes,
                     isLikes: false,
+                    isLikesLoading: true,
                 }
             })
 

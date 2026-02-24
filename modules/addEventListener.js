@@ -43,10 +43,15 @@ export function button() {
         let dateStr = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.toLocaleString('default', { year: '2-digit' })}   ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
         comments.data = dateStr
 
+        document.querySelector('.loading').style.display = 'block'
+        document.querySelector('.add-form').style.display = 'none'
+
         postComment(
             sanitizeHtml(addFormTextEl.value),
             sanitizeHtml(addFormNameEl.value),
         ).then((data) => {
+            document.querySelector('.loading').style.display = 'none'
+            document.querySelector('.add-form').style.display = 'flex'
             updateComments(data)
             renderComments()
             addFormTextEl.value = ''

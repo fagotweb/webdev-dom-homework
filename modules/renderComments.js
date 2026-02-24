@@ -5,12 +5,18 @@ import { commentsEl } from './addEventListener.js'
 
 export const renderComments = () => {
     let isLike = 'like-button -active-like'
+    let isLikeLoading = '-loading-like'
     const commentsHtml = comments
         .map((comments, index) => {
             if (comments.isLikes === false) {
                 isLike = 'like-button'
             } else {
                 isLike = 'like-button -active-like'
+            }
+            if (comments.isLikesLoading === false) {
+                isLikeLoading = '-loading-like'
+            } else {
+                isLikeLoading = ''
             }
             let dateStr = `${String(comments.date.getDate()).padStart(2, '0')}.${String(comments.date.getMonth() + 1).padStart(2, '0')}.${comments.date.toLocaleString('default', { year: '2-digit' })}   ${String(comments.date.getHours()).padStart(2, '0')}:${String(comments.date.getMinutes()).padStart(2, '0')}`
             return `<li class="comment">
@@ -28,14 +34,13 @@ export const renderComments = () => {
                     <div class="likes">
                         <span data-index="${index}" class="likes-counter">${comments.likes}
                         </span>
-                        <button data-index="${index}" class="${isLike}"></button>
+                        <button data-index="${index}" class="${isLike} ${isLikeLoading}"></button>
                     </div>
                 </div>
             </li>`
         })
         .join('')
     commentsEl.innerHTML = commentsHtml
-
     likesListeners()
     CommentListeners()
 }

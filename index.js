@@ -5,6 +5,8 @@ import { button } from './modules/addEventListener.js'
 import { updateComments } from './modules/comments.js'
 import { fetchComments } from './modules/api.js'
 
+document.querySelector('.comments').innerHTML = 'Подождите, идет загрузка.'
+
 fetchComments().then((data) => {
     updateComments(data)
     renderComments()
