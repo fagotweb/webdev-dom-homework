@@ -10,10 +10,10 @@ export const likesListeners = () => {
             const index = likeButtonEl.dataset.index
             if (comments[index].class === 'like-button') {
                 comments[index].class = 'like-button -active-like'
-                comments[index].like = Number(comments[index].like) + 1
+                comments[index].likes = Number(comments[index].likes) + 1
             } else {
                 comments[index].class = 'like-button'
-                comments[index].like = Number(comments[index].like) - 1
+                comments[index].likes = Number(comments[index].likes) - 1
             }
             renderComments()
         })
