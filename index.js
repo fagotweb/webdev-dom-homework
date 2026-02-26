@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { renderComments } from './modules/renderComments.js'
 import { addFormName } from './modules/addEventListener.js'
 import { addFormText } from './modules/addEventListener.js'

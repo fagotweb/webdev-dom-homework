@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { likesListeners } from './likesListeners.js'
 import { CommentListeners } from './CommentListeners.js'
 import { comments } from './comments.js'

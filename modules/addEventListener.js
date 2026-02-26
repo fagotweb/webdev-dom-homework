@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { comments } from './comments.js'
 import { handlePostClick } from './handlePostClick.js'
 export const commentsEl = document.querySelector('.comments')

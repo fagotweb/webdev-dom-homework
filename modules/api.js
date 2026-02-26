@@ -4,7 +4,19 @@ const host = 'https://wedev-api.sky.pro/api/v1/alex-zakoldaev'
 export const fetchComments = () => {
     return fetch(host + '/comments')
         .then((response) => {
-            return response.json()
+            if (response.status === 200) {
+                return response.json()
+            } else {
+                throw new Error('Ошибка сервера')
+            }
+        })
+        .catch((error) => {
+            if (error.message === 'Failed to fetch') {
+                alert('Нет интернета, попробуйте позже')
+            }
+            if (error.message === 'Ошибка сервера') {
+                alert('Сервер не доступен, попробуйте позже')
+            }
         })
         .then((responseData) => {
             const appComments = responseData.comments.map((comment) => {
@@ -30,9 +42,11 @@ export const postComment = (text, name) => {
             name: name,
             // forceError: true,
         }),
-    }).then((response) => {
-        if (response.status === 201) {
-            return response.json()} else {
+    })
+        .then((response) => {
+            if (response.status === 201) {
+                return response.json()
+            } else {
                 if (response.status === 500) {
                     throw new Error('Ошибка сервера')
                 }
@@ -40,7 +54,8 @@ export const postComment = (text, name) => {
                     throw new Error('Неверный запрос')
                 }
             }
-    }).then(() => {
-        return fetchComments()
-    })
+        })
+        .then(() => {
+            return fetchComments()
+        })
 }
