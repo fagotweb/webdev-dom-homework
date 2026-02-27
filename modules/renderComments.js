@@ -1,12 +1,15 @@
 /* eslint-disable prettier/prettier */
-import { likesListeners } from './likesListeners.js'
-import { CommentListeners } from './CommentListeners.js'
+export const container = document.querySelector('.container')
+import { fetchAndRender } from '/index.js'
 import { comments } from './comments.js'
-import { commentsEl } from './addEventListener.js'
+import { buttonEventListener } from './addEventListener.js'
+import { renderLogin } from './renderLogin.js'
+import { name, token } from './api.js'
 
 export const renderComments = () => {
     let isLike = 'like-button -active-like'
     let isLikeLoading = '-loading-like'
+
     const commentsHtml = comments
         .map((comments, index) => {
             if (comments.isLikes === false) {
@@ -41,7 +44,46 @@ export const renderComments = () => {
             </li>`
         })
         .join('')
-    commentsEl.innerHTML = commentsHtml
-    likesListeners()
-    CommentListeners()
+
+    const addCommentsHtml = `
+            <div class="add-form">
+                <input
+                    type="text"
+                    class="add-form-name"
+                    placeholder="Введите ваше имя"
+                    readonly
+                    value="${name}"
+                    id="name-input"
+
+                />
+                <textarea
+                    type="textarea"
+                    class="add-form-text"
+                    placeholder="Введите ваш коментарий"
+                    rows="4"
+                ></textarea>
+                <div class="add-form-row">
+                    <button class="add-form-button">Написать</button>
+                </div>
+            </div>
+            <div class="loading" style="display: none;">
+                Ждите, идет загрузка...
+            </div>
+            `
+    const linkToLoginText = `<p>чтобы отправить комментарий, <span class="link-login">войдите</span></p>`
+
+    const baseHtml = `
+            <ul class="comments">${commentsHtml}</ul>
+            ${token ? addCommentsHtml : linkToLoginText}
+            `
+    container.innerHTML = baseHtml
+
+    if (token) {
+        fetchAndRender()
+        buttonEventListener()
+    } else {
+        document.querySelector('.link-login').addEventListener('click', () => {
+            renderLogin()
+        })
+    }
 }

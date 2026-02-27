@@ -1,8 +1,8 @@
-import { addFormTextEl } from './addEventListener.js'
 import { comments } from './comments.js'
 
 export const CommentListeners = () => {
     const likeElements = document.querySelectorAll('li')
+    const addFormTextEl = document.querySelector('.add-form-text')
 
     for (const commentEl of likeElements) {
         commentEl.addEventListener('click', () => {

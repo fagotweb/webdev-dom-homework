@@ -2,14 +2,14 @@
 import { renderComments } from './renderComments.js'
 import { updateComments } from './comments.js'
 import { postComment } from './api.js'
-import { addFormNameEl } from './addEventListener.js'
-import { addFormTextEl } from './addEventListener.js'
 
 const sanitizeHtml = (value) => {
     return value.replaceAll('<', '&lt;').replaceAll('>', '&lt;')
 }
 
 export const handlePostClick = () => {
+    const addFormTextEl = document.querySelector('.add-form-text')
+    const addFormNameEl = document.querySelector('.add-form-name')
     postComment(
         sanitizeHtml(addFormTextEl.value),
         sanitizeHtml(addFormNameEl.value),
