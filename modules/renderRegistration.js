@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 import { registration, setToken } from './api.js'
 import { setName } from './api.js'
 import { fetchAndRender } from '/index.js'
