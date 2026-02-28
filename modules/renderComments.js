@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
 export const container = document.querySelector('.container')
-import { fetchAndRender } from '/index.js'
-import { comments } from './comments.js'
+// import { fetchAndRender } from '/index.js'
+import { comments} from './comments.js'
 import { buttonEventListener } from './addEventListener.js'
+import { likesListeners } from './likesListeners.js'
+import { CommentListeners } from './CommentListeners.js'
 import { renderLogin } from './renderLogin.js'
 import { name, token } from './api.js'
 
@@ -79,8 +81,10 @@ export const renderComments = () => {
     container.innerHTML = baseHtml
 
     if (token) {
-        fetchAndRender()
+        // fetchAndRender()
         buttonEventListener()
+        likesListeners()
+        CommentListeners()
     } else {
         document.querySelector('.link-login').addEventListener('click', () => {
             renderLogin()

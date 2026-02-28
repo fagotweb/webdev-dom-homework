@@ -47,12 +47,21 @@ export const renderLogin = () => {
     submitButtonEl.addEventListener('click', () => {
         login(loginEl.value, passwordEl.value)
             .then((response) => {
-                return response.json()
+                if (response.status === 400) {
+                throw new Error('Не верный логин или пароль')
+            } else {
+                return response.json()                
+            }
             })
             .then((data) => {
                 setToken(data.user.token)
                 setName(data.user.name)
                 fetchAndRender()                
             })
+            .catch((error) => {            
+            if (error.message === 'Не верный логин или пароль') {
+                alert(`${error.message}`)
+            }
+        })
     })
 }
